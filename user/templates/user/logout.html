@@ -1,0 +1,12 @@
+{% extends 'feed/base.html' %}
+{% block title %}Snet - LogOut {% endblock title %}
+{% block body %}
+<div class="container shadow-lg w-50 p-5 mt-3 rounded">
+	<h4>
+		<small>
+			You have been logged out <a href="{% url 'login' %}"> Login</a> again
+		</small>
+		
+	</h4>
+</div>
+{% endblock body %}

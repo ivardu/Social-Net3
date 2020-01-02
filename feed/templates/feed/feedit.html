@@ -1,0 +1,20 @@
+{% extends 'feed/base.html' %}
+{% load crispy_forms_tags %}
+{% block title %} Snet - Feed {% endblock title %}
+{% block body %}
+<div class="container">
+	<div class="container">
+		<div class="w-50 shadow-lg p-2 mt-2 mx-auto rounded">
+			<form class="form-group" method="post" enctype="multipart/form-data">
+				{% csrf_token %}
+				{{form|crispy}}
+				<input class="btn btn-primary" type="submit" name="" value="Post">
+			</form>
+		</div>
+		<!-- Feed Container -->
+		
+		<!-- Feed Container Ends -->
+	</div>
+
+</div>
+{% endblock body %}

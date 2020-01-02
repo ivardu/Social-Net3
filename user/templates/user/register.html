@@ -1,0 +1,20 @@
+{% extends 'feed/base.html' %}
+{% load crispy_forms_tags %}
+{% block tright %}
+	<a class="text-white h5 p-1" href="{% url 'login' %}"><button class="btn btn-info">Login</button></a>
+	<!-- <a class="text-white h5 p-1" href="{% url 'signup' %}"><button class="btn btn-success">SignUp</button></a> -->
+{% endblock tright %}
+{% block body %}
+<div class="container shadow mx-auto w-25">
+	<form class="form-group p-2" method="post">
+		{% csrf_token %}
+		<div class="align-items-center">
+			<h5>Register for Login</h5>
+		</div>
+	{{form|crispy}}
+	<div align="center">
+		<input class="btn btn-success w-50" type="Submit" value="Sign Up">
+	</div>
+	</form>
+</div>
+{% endblock body %}

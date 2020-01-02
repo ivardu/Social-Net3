@@ -1,0 +1,86 @@
+{% extends 'feed/base.html' %}
+{% load crispy_forms_tags %}
+{% load static %}
+{% block title %} Snet - Feed {% endblock title %}
+{% block body %}
+<div class="container">
+	<div class="container">
+		<!-- Feed Container -->
+		<!-- {{feedl}} -->
+		<div class="container rounded">
+			{% for items in feed %}
+			<div class="mx-auto shadow-lg border rounded w-50 mt-2">
+				<!-- Post Header -->
+				<div class="row p-1 ml-0 mr-0">
+					<div class="col-md-3">
+						<img class="img-thumbnail rounded-circle" 
+						src="{{items.user.profile.p_img.url}}">
+						<!-- width="100" height="100" -->
+					</div>
+					<div class="col-md-3 p-1 mt-2">
+						<div class="row h-25 mt-2">
+							{% if user == items.user %}
+								<h5>
+									<small>
+										<a class="mb-1" href="{% url 'profile'%}">
+											{{items.user.first_name}} {{items.user.last_name}}
+										</a>
+									</small>
+								</h5>
+							{% else %}
+								<h5><small><a class="mb-1" href="{% url 'rprofile' items.user.id %}">{{items.user.first_name}} {{items.user.last_name}}</a></small></h5>
+							{% endif %}
+							
+						</div>
+						<div class="row">
+							<small>{{items.date}}</small>
+						</div>
+	
+					</div>
+					<div class="col" align="right">
+						{% if user == items.user %}
+						<a href="{% url 'feed:feedit' items.id %}"><img class="border rounded-circle" src="{% static 'components/edit.png' %}" width="25" height="25" alt="Edit"></a>
+						{% endif %}
+					</div>
+
+				</div>
+				<!-- Post Content -->
+				<div class="p-2">
+					{{items.post}}	
+				</div>
+				<!-- User Photos in the Post -->
+				<div class="p-2" align="center">
+					<img class="img-thumbnail" src="{{items.images.url}}">
+				</div>
+				<!-- Bottom of the Post ->  Like, comment -->
+				<div class="p-2 ml-2 row">
+					<div class="col-md-1">
+						<a href="">Like</a>
+					</div>
+					<div class="col-md-1">
+						<a href="">Comment</a>
+					</div>
+				</div>
+			</div>
+			<div class="container">
+				{% if items.has_previous %}
+					<a href="?page=1">First</a>
+					<a href="?page={{items.previous_page_number}}">Previous</a>
+				{% endif %}
+					<span>
+					{{items.number}}
+					</span>
+				{% if items.has_next %}
+					<a href="?page={{items.next_page_number}}">Next</a>
+					<a href="?page={{items.paginator.num_pages}}">last</a>
+				{% endif %}
+			</div>
+			{% endfor %}
+		</div>
+		<!-- Feed Container Ends -->
+		<!-- Pagination -->
+
+	</div>
+
+</div>
+{% endblock body %}

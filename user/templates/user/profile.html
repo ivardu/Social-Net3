@@ -1,0 +1,30 @@
+{% extends 'feed/base.html' %}
+{% load crispy_forms_tags %}
+{% block title %}Snet - Profile {% endblock title%}
+{% block body %}
+<div class="container">
+	<div class="w-50 shadow-lg bg-white p-3 rounded mx-auto mt-2">
+		<div class="row">
+			<div class="col-md-3">
+				<img class="img-thumbnail rounded-circle"  src="{{user.profile.p_img.url}}" width="100" height="100">
+			</div>
+			<div class="col-md-6">
+				<div class="row">
+					<h4><small>Profile Details</small></h4>
+				</div>
+				<div class="row">
+					<small>{{user.email}}</small>
+				</div>
+			</div>	
+		</div>
+		<form method="post" enctype="multipart/form-data">
+			{% csrf_token %}
+			{{pform|crispy}}
+			{{uform|crispy}}
+			<div align="center">
+				<input class="btn btn-success w-25" type="submit" name="" value="Update">
+			</div>
+		</form>
+	</div>
+</div>
+{% endblock body%}

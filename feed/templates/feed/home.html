@@ -1,0 +1,49 @@
+{% extends 'feed/base.html' %}
+{% block body %}
+<div class="mx-auto">
+	<div class="container rounded">
+		{% for items in feed_list %}
+		<div class="mx-auto shadow-lg rounded w-50 mt-2">
+			<!-- Post Header -->
+			<div class="row p-1 border ml-0 mr-0">
+				<div class="col-md-3">
+					<img class="img-thumbnail rounded-circle" 
+					src="{{items.user.profile.p_img.url}}">
+					<!-- width="100" height="100" -->
+				</div>
+				<div class="col-md-6 p-1 mt-2">
+					<div class="row h-25 mt-2">
+						<h5><small>{{items.user.first_name}} {{items.user.last_name}}</a></small></h5>
+					</div>
+					<div class="row">
+						<small>{{items.date}}</small>
+					</div>
+				</div>
+			</div>
+			<!-- Post Content -->
+			<div class="p-2">
+				{{items.post}}	
+			</div>
+			<!-- User Photos in the Post -->
+			<div class="p-2" align="center">
+				<img class="img-thumbnail" src="{{items.images.url}}">
+			</div>
+			<!-- Bottom of the Post ->  Like, comment -->
+			{% if user.is_authenticated %}
+			<div></div>
+			{% else %}
+			<div class="p-2 ml-2 row">
+				<div class="col-md-1">
+					<a href="{% url 'login' %}">Like</a>
+				</div>
+				<div class="col-md-1">
+					<a href="{% url 'login' %}">Comment</a>
+				</div>
+			</div>	
+			{% endif %}
+		</div>
+		{% endfor %}
+	</div>
+</div>
+
+{% endblock %}
