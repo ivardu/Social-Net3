@@ -1,0 +1,16 @@
+{% extends 'feed/base.html' %}
+{% block title %} Snet - PassChange {% endblock title %}
+{% load crispy_forms_tags %}
+{% block body %}
+<div class="container" align="center">
+	<div class="shadow-lg col-md-5 bg-white border rounded p-2 mt-2 w-50">
+		<h2><SMALL>Password Change</SMALL></h2>
+		<form method="post">
+			{% csrf_token %}
+			{{form|crispy}}
+			<input class="btn btn-success" type="submit" name="" value='Update'>
+			<a class="btn btn-danger" href="{% url 'feed:home' %}">Cancel</a>
+		</form>
+	</div>
+</div>
+{% endblock body %}

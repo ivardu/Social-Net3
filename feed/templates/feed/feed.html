@@ -14,7 +14,7 @@
 		</div>
 		<!-- Feed Container -->
 		<div class="container rounded">
-			{% for items in feed_list %}
+			{% for items in pages %}
 			<div class="mx-auto shadow-lg border rounded w-50 mt-2">
 				<!-- Post Header -->
 				<div class="row p-1 ml-0 mr-0">
@@ -63,14 +63,47 @@
 					<div class="col-md-1">
 						<a href="">Like</a>
 					</div>
-					<div class="col-md-1">
-						<a href="">Comment</a>
+				</div>
+				<div class="">
+					<div class="form-row align-items-center">
+						<form class="form-inline" method="post">
+							{% csrf_token %}
+							<div class="col-auto">
+								<label></label>
+								{{comment}}
+							</div>
+							<div class="col-auto">
+								<input class="btn btn-success" type="submit" name="post" value="post">
+							</div>
+						</form>
 					</div>
 				</div>
+		
 			</div>
 			{% endfor %}
 		</div>
 		<!-- Feed Container Ends -->
+		<div class="container mb-2 mt-2 p-2" align="center">
+			{% if pages.has_previous %}
+				<a class="btn btn-outline-info" href="?page=1">First</a>
+				<!-- <a class="btn btn-outline-info" href="?page={{pages.previous_page_number}}"></a> -->
+			{% endif %}
+			{% for num in pages.paginator.page_range %}
+				{% if num == pages.number %}
+					<a class="btn btn-info" href="?page={{num}}">{{num}}</a>
+				{% elif num > pages.number|add:'-2' and num < pages.number|add:'2' %}
+					<a class="btn btn-outline-info" href="?page={{num}}">{{num}}</a>
+				{% endif %}
+
+			{% endfor %}
+			<!-- {{pages.number}} -->
+
+			{% if pages.has_next %}
+				<a class="btn btn-outline-info" href="?page={{pages.next_page_number}}">Next</a>
+				<!-- <a href="?page={{pages.page}}"></a> -->
+			{% endif %}
+
+		</div>
 	</div>
 
 </div>

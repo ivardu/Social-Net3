@@ -15,7 +15,7 @@
 	<!-- Whole Page Div -->
 	<div>
 		<!-- Header Section -->
-		<div class="nav navbar navbar-dark bg-dark">
+		<div class="nav navbar navbar-dark bg-dark pt-0 pb-0">
 			<!-- Left Header Section -->
 			<div class="ml-5">
 				<a class="navbar-brand text-white" href="{% url 'feed:home' %}"><h2>SocialNet 3</h2></a>
@@ -27,14 +27,20 @@
 				{% endif %}
 			</div>
 			<!-- Right Header Section -->
-			<div class="nav navbar navbar-right mr-5" >
+			<div class="nav navbar navbar-right mr-5 pt-0 pb-0" >
 				{% if user.is_authenticated %}
-					<div class="navbar-right">
-							<a class="navbar-brand mr-1" href="{% url 'profile' %}">
-								<img class="p-1 img-thumbnail rounded-circle" src="{{user.profile.p_img.url}}" width=35 height=35>
-							</a>
-  						<a class=" text-white h6 mt-1" href="{% url 'profile' %}">{{user.first_name}}</a>
-						<a class="text-white h6 p-1" href="{% url 'logout' %}">Logout</a>						
+					<div class="navbar-right row">
+						<a class="navbar-brand mr-0 pt-0 pb-0 pr-0 col-md-3" href="{% url 'profile' %}">
+							<img class="p-1 img-thumbnail rounded-circle" src="{{user.profile.p_img.url}}" width=35 height=35>
+						</a>
+						<div class="dropdown col-md-4 mr-0 pl-0 pr-0 ml-0 mt-1">
+							<a class="dropdown-toggle h6 text-white btn btn-outline-info pt-0 mb-0" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{user.first_name}}</a>
+							<div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+		  							<a class="dropdown-item" href="{% url 'profile' %}">{{user.first_name}} | Profile</a>
+		  							<a class="dropdown-item" href="{% url 'passchange' %}">Password Change</a>
+	  						</div>
+  						</div>
+						<a class="text-white col-md-3 mt-1 mr-0" href="{% url 'logout' %}">Logout</a>						
 					 </div>
 				{% else %}
 					<div class="navbar-right"> 

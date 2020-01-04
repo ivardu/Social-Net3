@@ -24,3 +24,13 @@ class Feed(models.Model):
 			output_size = (400,400)
 			img.thumbnail(output_size)
 			img.save(self.images.path)
+
+	def __str():
+		return f'{post}'
+
+class Comments(models.Model):
+	comments = models.CharField(max_length=255)
+	feed = models.ForeignKey(Feed, on_delete=models.CASCADE)
+
+	def __str__():
+		return f'{feed}'

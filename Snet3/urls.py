@@ -15,7 +15,7 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-from django.contrib.auth.views import LoginView, LogoutView
+from django.contrib.auth.views import LoginView, LogoutView, PasswordChangeView, PasswordChangeDoneView
 from user import views as user_views
 
 from django.conf import settings
@@ -30,6 +30,12 @@ urlpatterns = [
     path('register/',user_views.register, name='signup'),
     path('profile/',user_views.profile, name='profile'),
     path('rprofile/<int:pk>',user_views.rprofile, name='rprofile'),
+    path('passchange/',
+        PasswordChangeView.as_view(template_name='user/passwdchange.html'), 
+        name='passchange'),
+    path('passdone/',
+        PasswordChangeDoneView.as_view(template_name='user/changedone.html'),
+        name='password_change_done'),
 ]
 
 

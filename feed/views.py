@@ -2,10 +2,11 @@ from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseRedirect
 from django.views.generic.edit import FormView 
 from django.views.generic import ListView
-from feed.forms import FeedForm
+from feed.forms import FeedForm, CommentForm
 from feed.models import Feed
 from django.urls import reverse
 from django.contrib.auth.decorators import login_required
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 # Create your views here.
 
@@ -18,16 +19,33 @@ def home(request):
 @login_required
 def feedview(request):
 	obj = Feed.objects.all()
+	page = request.GET.get('page',1)
+	paginator = Paginator(obj, 5)
+	try:
+		pages = paginator.page(page)
+	except PageNotAnInteger:
+		pages = paginator.page(1)
+	except EmptyPage:
+		pages = paginator.page(paginator.num_pages)
+
 	if request.method == 'POST':
 		form = FeedForm(request.POST, request.FILES)
+		comment = CommentForm(request.POST)
 		if form.is_valid():
 			feed = form.save(commit=False)
 			feed.user = request.user
 			feed.save()
 			return HttpResponseRedirect(reverse('feed:feed'))
+
+		elif comment.is_valid():
+			comment = comment.save(commit=False)
+			comment.user = request.user
+			comment.save()
+			return HttpResponseRedirect(reverse('feed:feed'))
 	else:
 		form = FeedForm()
-	return render(request,'feed/feed.html',{'form':form,'feed_list':obj})
+		comment = CommentForm()
+	return render(request,'feed/feed.html',{'form':form,'comment':comment,'pages':pages})
 
 
 def feededit(request, pk):
