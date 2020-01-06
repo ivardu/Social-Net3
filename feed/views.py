@@ -21,6 +21,7 @@ def feedview(request):
 	obj = Feed.objects.all()
 	page = request.GET.get('page',1)
 	paginator = Paginator(obj, 5)
+	
 	# commlist = 
 	try:
 		pages = paginator.page(page)
@@ -33,14 +34,17 @@ def feedview(request):
 		form = FeedForm(request.POST, request.FILES)
 		comment = CommentForm(request.POST)
 		like = LikeForm(request.POST)
-		feed_obj = get_object_or_404(Feed, pk=request.POST.get('items_id'))
-		already_liked = feed_obj.like_set.filter(user=request.user) and True or False
+		# Feed object
+		if request.POST.get('items_id'):
+			feed_obj = Feed.objects.get(pk=request.POST.get('items_id'))
+			already_liked = feed_obj.like_set.filter(user=request.user) and True or False
 		# Feed Form Data 
 		if form.is_valid():
 			feed = form.save(commit=False)
 			feed.user = request.user
 			feed.save()
 			return HttpResponseRedirect(reverse('feed:feed'))
+			# return HttpResponse('Am I here..')
 		# Comment Form Data 
 		elif comment.is_valid():
 			comment = comment.save(commit=False)
@@ -58,6 +62,7 @@ def feedview(request):
 			return HttpResponseRedirect(reverse('feed:feed'))
 		else:
 			return HttpResponseRedirect(reverse('feed:feed'))
+			# return HttpResponse('Am I here.. ?')
 	else:
 		form = FeedForm()
 		comment = CommentForm()

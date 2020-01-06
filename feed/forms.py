@@ -11,7 +11,7 @@ class FeedForm(ModelForm):
 		fields = ['post','images',]
 
 class CommentForm(ModelForm):
-	comments = forms.CharField(label='', widget=forms.TextInput(attrs={'placeholder':'Comments'}))
+	comments = forms.CharField(label='', widget=forms.TextInput(attrs={'placeholder':'Enter your comment..','class':'h6 form-control-sm'}))
 	class Meta:
 		model = Comments
 		fields = ['comments']

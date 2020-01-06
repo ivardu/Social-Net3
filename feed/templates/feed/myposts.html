@@ -7,6 +7,7 @@
 	<div class="container">
 		<!-- Feed Container -->
 		<!-- {{feedl}} -->
+		{% if feed %}
 		<div class="container rounded">
 			{% for items in feed %}
 			<div class="mx-auto shadow-lg border rounded w-50 mt-2">
@@ -88,6 +89,12 @@
 				<!-- {{page_obj.number}} -->
 			</div>
 		</div>
+		{% else %}
+		<div class="container shadow-lg w-50 p-2 mt-2 rounded" align="center">
+			<h2><small>You have not posted yet any.. !!</small></h2>
+			<a href="{% url 'feed:feed' %}">Post here</a>
+		</div>
+		{% endif %}
 	</div>
 
 </div>
