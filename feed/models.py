@@ -25,12 +25,22 @@ class Feed(models.Model):
 			img.thumbnail(output_size)
 			img.save(self.images.path)
 
-	def __str():
-		return f'{post}'
+	def __str__(self):
+		return f'{self.post}'
 
 class Comments(models.Model):
 	comments = models.CharField(max_length=255)
 	feed = models.ForeignKey(Feed, on_delete=models.CASCADE)
+	user = models.ForeignKey(SnetUser, on_delete=models.CASCADE)
+	date = models.DateTimeField(auto_now_add=True)
 
-	def __str__():
-		return f'{feed}'
+	def __str__(self):
+		return f'{self.comments}'
+
+	class Meta:
+		ordering = ['-date']
+
+class Like(models.Model):
+	like = models.IntegerField()
+	user = models.ForeignKey(SnetUser, on_delete=models.CASCADE)
+	post = models.ForeignKey(Feed, on_delete=models.CASCADE)

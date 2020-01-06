@@ -59,13 +59,25 @@
 					<img class="img-thumbnail" src="{{items.images.url}}">
 				</div>
 				<!-- Bottom of the Post ->  Like, comment -->
+				<!-- Like Section -->
 				<div class="p-2 ml-2 row">
-					<div class="col-md-1">
-						<a href="">Like</a>
+					<div class="col-xs-2 mr-0">
+						<form method='post'>
+							{%csrf_token %}
+							<input type="hidden" name="items_id" value="{{items.id}}">
+							<!-- {{like}} -->
+							<button class="btn btn-link" type="submit" name='like' value=1>Like</button>
+						</form>
+					</div>
+					<div class="col-xs-2 ml-0 mb-0 mt-1">
+						<small>
+							({{ items.like_set.all.count}})
+						</small>
 					</div>
 				</div>
-				<div class="">
-					<div class="form-row align-items-center">
+				<!-- Comment Section -->
+				<div class="container">
+					<div class="form-row align-items-center m-1">
 						<form class="form-inline" method="post">
 							{% csrf_token %}
 							<div class="col-auto">
@@ -73,10 +85,21 @@
 								{{comment}}
 							</div>
 							<div class="col-auto">
-								<input class="btn btn-success" type="submit" name="post" value="post">
+								<input type="hidden" name="items_id" value="{{items.id}}">
+								<input class="btn btn-success btn-sm from-control" id="inlineFormInputName2" type="submit" name="post" value="comment">
 							</div>
 						</form>
 					</div>
+					<div class="container">	
+						{% for comment_list in items.comments_set.all %}
+							<h6 class="mb-0 bg-light text-dark">
+								<hr class="m-0">
+								<a class="p-1" href="{% url 'rprofile' comment_list.user_id %}"><label>{{comment_list.user.first_name}}</label></a><small>{{comment_list.comments}}</small>
+							</hr>
+							</h6>
+						{% endfor %}
+						<!-- {{items.comments_set.all}} -->
+					</div>	
 				</div>
 		
 			</div>
@@ -86,7 +109,6 @@
 		<div class="container mb-2 mt-2 p-2" align="center">
 			{% if pages.has_previous %}
 				<a class="btn btn-outline-info" href="?page=1">First</a>
-				<!-- <a class="btn btn-outline-info" href="?page={{pages.previous_page_number}}"></a> -->
 			{% endif %}
 			{% for num in pages.paginator.page_range %}
 				{% if num == pages.number %}
@@ -94,13 +116,10 @@
 				{% elif num > pages.number|add:'-2' and num < pages.number|add:'2' %}
 					<a class="btn btn-outline-info" href="?page={{num}}">{{num}}</a>
 				{% endif %}
-
 			{% endfor %}
-			<!-- {{pages.number}} -->
 
 			{% if pages.has_next %}
 				<a class="btn btn-outline-info" href="?page={{pages.next_page_number}}">Next</a>
-				<!-- <a href="?page={{pages.page}}"></a> -->
 			{% endif %}
 
 		</div>

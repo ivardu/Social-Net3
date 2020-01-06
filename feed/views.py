@@ -1,8 +1,8 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponse, HttpResponseRedirect
 from django.views.generic.edit import FormView 
 from django.views.generic import ListView
-from feed.forms import FeedForm, CommentForm
+from feed.forms import FeedForm, CommentForm, LikeForm
 from feed.models import Feed
 from django.urls import reverse
 from django.contrib.auth.decorators import login_required
@@ -21,32 +21,49 @@ def feedview(request):
 	obj = Feed.objects.all()
 	page = request.GET.get('page',1)
 	paginator = Paginator(obj, 5)
+	# commlist = 
 	try:
 		pages = paginator.page(page)
 	except PageNotAnInteger:
 		pages = paginator.page(1)
 	except EmptyPage:
 		pages = paginator.page(paginator.num_pages)
-
+	# Validating the Feed Post Data and Comment Data
 	if request.method == 'POST':
 		form = FeedForm(request.POST, request.FILES)
 		comment = CommentForm(request.POST)
+		like = LikeForm(request.POST)
+		feed_obj = get_object_or_404(Feed, pk=request.POST.get('items_id'))
+		already_liked = feed_obj.like_set.filter(user=request.user) and True or False
+		# Feed Form Data 
 		if form.is_valid():
 			feed = form.save(commit=False)
 			feed.user = request.user
 			feed.save()
 			return HttpResponseRedirect(reverse('feed:feed'))
-
+		# Comment Form Data 
 		elif comment.is_valid():
 			comment = comment.save(commit=False)
+			comment.feed = feed_obj
 			comment.user = request.user
 			comment.save()
+			return HttpResponseRedirect(reverse('feed:feed'))
+		# Like Form Data 
+		elif like.is_valid() and already_liked == False:
+			like_model = like.save(commit=False)
+			like_model.like = like.cleaned_data['like']
+			like_model.user = request.user
+			like_model.post = feed_obj
+			like_model.save()
+			return HttpResponseRedirect(reverse('feed:feed'))
+		else:
 			return HttpResponseRedirect(reverse('feed:feed'))
 	else:
 		form = FeedForm()
 		comment = CommentForm()
-	return render(request,'feed/feed.html',{'form':form,'comment':comment,'pages':pages})
-
+		# like = LikeForm()
+	return render(request,'feed/feed.html',locals())
+# {'form':form,'comment':comment,'like':like, 'pages':pages}
 
 def feededit(request, pk):
 	feed = Feed.objects.get(pk=pk)
