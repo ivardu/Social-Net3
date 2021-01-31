@@ -6,10 +6,11 @@ from PIL import Image
 
 class SnetUser(AbstractUser):
 	GENDER_CHOICES = (
-			('M','Male'),
-			('F','Female'),
-			('T','Trans'),
-		)
+		('M','Male'),
+		('F','Female'),
+		('T','Trans'),
+	)
+
 	dob = models.DateField()
 	gender = models.CharField(max_length=1, choices=GENDER_CHOICES)
 

@@ -30,8 +30,9 @@ class Feed(models.Model):
 
 class Comments(models.Model):
 	comments = models.CharField(max_length=255)
+	parent_comment = models.ForeignKey('self', null=True, on_delete=models.CASCADE, related_name='child_comments')
 	feed = models.ForeignKey(Feed, on_delete=models.CASCADE)
-	user = models.ForeignKey(SnetUser, on_delete=models.CASCADE)
+	user = models.ForeignKey(SnetUser, on_delete=models.CASCADE, related_name='+')
 	date = models.DateTimeField(auto_now_add=True)
 
 	def __str__(self):
